@@ -1,9 +1,10 @@
 import numpy as np
 import pandas as pd
 import plotly.express as px
+import matplotlib.pyplot as plt
 import streamlit as st
 
-# 2.function to clean data
+st.set_page_config(layout='wide')
 
 def clean_2017(x):
     if isinstance(x, (int,float)): return x
@@ -14,7 +15,7 @@ def clean_2017(x):
 
 st.cache()                     
 def load_dataset1():
-    df = pd.read_csv('Mini_Project/Data/Country Quater Wise Visitors.csv')
+    df = pd.read_csv('MINI_PROJECT/Data/Country Quater Wise Visitors.csv')
     df = clean_2017(df)
     return df
 #def load_dataset2():
@@ -44,8 +45,9 @@ def load_dataset1():
 
 # 4. setup basic UI
 
-st.title("India Tourism 2014-2020")
-with st.spinner("Loading Dataset"):                     
+st.title("India Tourism ")
+with st.spinner("Loading Dataset"):
+    print("D")                     
     df = load_dataset1()
 #    df = load_dataset2()
 #    df = load_dataset3()
