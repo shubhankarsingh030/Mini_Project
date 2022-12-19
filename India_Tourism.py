@@ -1,21 +1,18 @@
-# 1. import libraries
-
 import numpy as np
 import pandas as pd
-import plotly.express as px # simple graphs
-import plotly.graph_objects as go # complex graphs
+import plotly.express as px
 import streamlit as st
 
-# 2. create function to clean data
+# 2.function to clean data
 
 def clean_2017(x):
     if isinstance(x, (int,float)): return x
     elif isinstance(x, str): return np.nan
     return x
 
-# 3. create function to load data
+# 3.function to load data
 
-st.cache()                                # helps to make the app faster
+st.cache()                     
 def load_dataset1():
     df = pd.read_csv('Mini_Project/Data/Country Quater Wise Visitors.csv')
     df = clean_2017(df)
@@ -48,7 +45,7 @@ def load_dataset1():
 # 4. setup basic UI
 
 st.title("India Tourism 2014-2020")
-with st.spinner("Loading Dataset"):                        # show a loading message
+with st.spinner("Loading Dataset"):                     
     df = load_dataset1()
 #    df = load_dataset2()
 #    df = load_dataset3()
@@ -58,7 +55,7 @@ with st.spinner("Loading Dataset"):                        # show a loading mess
 #    df = load_dataset7()
 #    df = load_dataset8()
 
-if st.sidebar.checkbox("Show full dataframe"):     # show raw data if checkbox is checked
+if st.sidebar.checkbox("Show full dataframe"):
     st.write(df)
 
 # 5. give user option to select columns
@@ -70,11 +67,9 @@ df
 countries = df.index.tolist()
 sel_country = st.sidebar.selectbox("Country of Nationality", countries)
 
-years = list(range(2014, 2020))
-
 # graph
 st.header(f'visitors from {sel_country} to India')
-countries = df.loc[sel_country, years ] # subset
+countries = df.loc[sel_country]
 fig = px.line(df, x =df.index, y= df.values)
 st.plotly_chart(fig)
 
@@ -82,14 +77,8 @@ st.sidebar.header("Select multiple countries to visualize")
 sel_countries = st.sidebar.multiselect("Countries", countries)
 if len(sel_countries)>1:
     st.header(f'Comparing countries {", ".join(sel_countries)}')
-    df_countries = df.loc[sel_countries, years].T # subset
+    df_countries = df.loc[sel_countries].T
     fig = px.line(df, x =df.index, y= df.values)
     st.plotly_chart(fig)
 else:
     st.warning('Please select at least 2 countries for comparison')
-
-
-# 6. give user option display graphs
-
-# 0. Run the app run the command below
-# streamlit run Mini_Project/India_Tourism.py
