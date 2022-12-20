@@ -13,74 +13,92 @@ def clean_2017(x):
 
 # 3.function to load data
 
-st.cache()                     
+st.cache()
 def load_dataset1():
-    df = pd.read_csv('MINI_PROJECT/Data/Country Quater Wise Visitors.csv')
+    df = pd.read_csv('Data/Country Quater Wise Visitors.csv')
     df = clean_2017(df)
     return df
-#def load_dataset2():
-    df = pd.read_csv('Mini_Project/Data/Country Wise Age group.csv')
+def load_dataset2():
+    df = pd.read_csv('Data/Country Wise Age group.csv')
     df = clean_2017(df)
     return df
-#def load_dataset3():
-    df = pd.read_csv('Mini_Project/Data/Country Wise Airport.csv')
+def load_dataset3():
+    df = pd.read_csv('Data/Country Wise Airport.csv')
     df = clean_2017(df)
     return df
-#def load_dataset4():
-    df = pd.read_csv('Mini_Project/Data/Country Wise Gender.csv')
+def load_dataset4():
+    df = pd.read_csv('Data/Country Wise Gender.csv')
     return df
-#def load_dataset5():
-    df = pd.read_csv('Mini_Project/Data/Country Wise Visitors ways.csv')
+def load_dataset5():
+    df = pd.read_csv('Data/Country Wise Visitors ways.csv')
     df = clean_2017(df)
     return df
-#def load_dataset6():
-    df = pd.read_csv('Mini_Project/Data/Country Wise Yearly Visitors.csv')
+def load_dataset6():
+    df = pd.read_csv('Data/Country Wise Yearly Visitors.csv')
     return df
-#def load_dataset7():
-    df = pd.read_csv('Mini_Project/Data/General Data 2014-2020.csv')
+def load_dataset7():
+    df = pd.read_csv('Data/General Data 2014-2020.csv')
     return df
-#def load_dataset8():
-    df = pd.read_csv('Mini_Project/Data/Top 10 state Visit.csv')
+def load_dataset8():
+    df = pd.read_csv('Data/Top 10 state Visit.csv')
     return df
 
 # 4. setup basic UI
 
-st.title("India Tourism ")
-with st.spinner("Loading Dataset"):
-    print("D")                     
+st.title("India Tourism 2014-2020")
+with st.spinner("Loading Dataset"):                   
     df = load_dataset1()
-#    df = load_dataset2()
-#    df = load_dataset3()
-#    df = load_dataset4()
-#    df = load_dataset5()
-#    df = load_dataset6()
-#    df = load_dataset7()
-#    df = load_dataset8()
+    df2 = load_dataset2()
+    df3 = load_dataset3()
+    df4 = load_dataset4()
+    df5 = load_dataset5()
+    df6 = load_dataset6()
+    df7 = load_dataset7()
+    df8 = load_dataset8()
 
-if st.sidebar.checkbox("Show full dataframe"):
+if st.sidebar.checkbox("Display Data 1"):
     st.write(df)
+if st.sidebar.checkbox("Display Data 2"):
+    st.write(df2)
+if st.sidebar.checkbox("Display Data 3"):
+    st.write(df3)
+if st.sidebar.checkbox("Display Data 4"):
+    st.write(df4)
+if st.sidebar.checkbox("Display Data 5"):
+    st.write(df5)
+if st.sidebar.checkbox("Display Data 6"):
+    st.write(df6)
+if st.sidebar.checkbox("Display Data 7"):
+    st.write(df7)
+if st.sidebar.checkbox("Display Data 8"):
+    st.write(df8)
 
 # 5. give user option to select columns
 
-st.sidebar.header("Select a country to visualize")
 df.set_index('Country of Nationality', inplace=True)
 df.dropna(axis=1, how='all', inplace=True)
-df
-countries = df.index.tolist()
-sel_country = st.sidebar.selectbox("Country of Nationality", countries)
 
 # graph
-st.header(f'visitors from {sel_country} to India')
+st.header("Select a country to visualize")
+sel_country = st.selectbox("Country of Nationality", df.index.tolist())
+st.subheader(f'Visitors from {sel_country} to India')
 countries = df.loc[sel_country]
-fig = px.line(df, x =df.index, y= df.values)
-st.plotly_chart(fig)
+fig = px.line(countries, x =countries.index, y= countries.values)
+st.plotly_chart(fig, use_container_width=True)
 
-st.sidebar.header("Select multiple countries to visualize")
-sel_countries = st.sidebar.multiselect("Countries", countries)
+st.header("Select multiple countries to visualize")
+sel_countries = st.multiselect("Countries", df.index.tolist())
 if len(sel_countries)>1:
-    st.header(f'Comparing countries {", ".join(sel_countries)}')
+    st.subheader(f'Comparing countries {", ".join(sel_countries)}')
     df_countries = df.loc[sel_countries].T
-    fig = px.line(df, x =df.index, y= df.values)
-    st.plotly_chart(fig)
+    fig = px.line(df_countries, x =df_countries.index, y= sel_countries)
+    st.plotly_chart(fig,use_container_width=True)
 else:
     st.warning('Please select at least 2 countries for comparison')
+
+st.subheader('Yehh')
+fig = px.line(df, df.index,['2014 1st quarter (Jan-March)','2014 2nd quarter (Apr-June)','2014 3rd quarter (July-Sep)','2014 4th quarter (Oct-Dec))'], title='country quarterly wise visiter')
+st.plotly_chart(fig, use_container_width=True)
+
+fig = px.bar(df, df.index,'2020 2nd quarter (Apr-June)')
+st.plotly_chart(fig, use_container_width=True)
