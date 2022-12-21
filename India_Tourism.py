@@ -3,8 +3,10 @@ import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
 import streamlit as st
-
+import os
 st.set_page_config(layout='wide')
+for i in os.listdir('data'):
+    st.wrie(i)
 
 def clean_2014(x):
     if isinstance(x, (int,float)): return x
