@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 import os
 st.set_page_config(layout='wide')
-for i in os.listdir():
+for i in os.listdir('Data'):
     st.write(i)
 
 def clean_2014(x):
