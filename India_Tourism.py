@@ -6,7 +6,7 @@ import streamlit as st
 import os
 st.set_page_config(layout='wide')
 for i in os.listdir():
-    st.wrie(i)
+    st.write(i)
 
 def clean_2014(x):
     if isinstance(x, (int,float)): return x
